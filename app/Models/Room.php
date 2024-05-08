@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Parental\HasChildren;
 
@@ -49,6 +50,19 @@ class Room extends Model
     public function scopeCloseds(Builder $query): void
     {
         $query->where('type', 'closed');
+    }
+
+    public function become($model)
+    {
+        return tap(new $model($attributes = $this->getAttributes()), function ($instance) use ($model, $attributes) {
+            $instance->setRawAttributes(array_merge($attributes, [
+                'type' => array_search($model, $this->childTypes),
+            ]));
+
+            $instance->exists = true;
+
+            $instance->setRelations($this->relations);
+        });
     }
 
     public function membership()

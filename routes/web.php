@@ -25,8 +25,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::prefix('rooms')->as('rooms.')->group(function () {
-        Route::resource('opens', OpensController::class)->only(['create', 'store']);
-        Route::resource('closeds', ClosedsController::class)->only(['create', 'store']);
+        Route::resource('opens', OpensController::class)->only(['create', 'store', 'edit', 'update']);
+        Route::resource('closeds', ClosedsController::class)->only(['create', 'store', 'edit', 'update']);
     });
 
     Route::resource('rooms', RoomsController::class)->only(['show']);

@@ -1,5 +1,9 @@
-<form action="{{ route('rooms.closeds.store') }}" method="post">
+<form action="{{ $room->exists ? route('rooms.closeds.update', $room) : route('rooms.closeds.store') }}" method="post">
     @csrf
+
+    @if ($room->exists)
+        @method('PUT')
+    @endif
 
     <div data-turbo-permanent id="room_name">
         <x-input-label :for="dom_id($room, 'name')" :value="__('Name')" />
@@ -10,26 +14,22 @@
     <div class="mt-2 space-y-2">
         <h3 class="text-lg font-semibold">Users</h3>
 
-        @foreach ($users as $user)
-        <div>
-            <label class="flex items-center space-x-1">
-                @if (auth()->user()->is($user))
-                    <input type="hidden" hidden name="users[]" value="{{ $user->id }}" />
-                    <input type="checkbox" name="users[]" checked="checked" disabled value="{{ $user->id }}" />
-                @else
-                    <input type="checkbox" name="users[]" value="{{ $user->id }}" />
-                @endif
-                <span>{{ $user->name }}</span>
-            </label>
-        </div>
+        @foreach ($selectedUsers as $user)
+            @include('rooms.closeds.partials.user', ['room' => $room, 'user' => $user, 'selected' => true])
+        @endforeach
+
+        <hr />
+
+        @foreach ($unselectedUsers as $user)
+            @include('rooms.closeds.partials.user', ['room' => $room, 'user' => $user, 'selected' => false])
         @endforeach
     </div>
 
     <div class="flex items-center justify-end mt-4">
-        <a href="{{ route('rooms.opens.create') }}">Switch Type</a>
+        <a href="{{ $room->exists ? route('rooms.opens.edit', $room) : route('rooms.opens.create') }}">Switch Type</a>
 
         <x-primary-button class="ms-3">
-            {{ __('Create') }}
+            {{ $room->exists ? __('Save') : __('Create') }}
         </x-primary-button>
     </div>
 </form>

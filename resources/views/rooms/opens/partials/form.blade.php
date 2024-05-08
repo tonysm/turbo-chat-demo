@@ -1,5 +1,8 @@
-<form action="{{ route('rooms.opens.store') }}" method="post">
+<form action="{{ $room->exists ? route('rooms.opens.update', $room) : route('rooms.opens.store') }}" method="post">
     @csrf
+    @if ($room->exists)
+        @method('PUT')
+    @endif
 
     <div data-turbo-permanent id="room_name">
         <x-input-label :for="dom_id($room, 'name')" :value="__('Name')" />
@@ -21,10 +24,10 @@
     </div>
 
     <div class="flex items-center justify-end mt-4">
-        <a href="{{ route('rooms.closeds.create') }}">Switch Type</a>
+        <a href="{{ $room->exists ? route('rooms.closeds.edit', $room) : route('rooms.closeds.create') }}">Switch Type</a>
 
         <x-primary-button class="ms-3">
-            {{ __('Create') }}
+            {{ $room->exists ? __('Save') : __('Create') }}
         </x-primary-button>
     </div>
 </form>

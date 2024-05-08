@@ -6,6 +6,7 @@ use App\Models\Membership;
 use App\Models\Room;
 use App\Models\User;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class Granter
 {
@@ -26,5 +27,24 @@ class Granter
             uniqueBy: ['user_id', 'room_id'],
             update: [],
         );
+    }
+
+    public function revokeFrom(Collection|User $users)
+    {
+        if ($users instanceof User) {
+            $users = Collection::wrap([$users->id]);
+        } else if ($users->first() instanceof User) {
+            $users = $users->pluck('id');
+        }
+
+        $this->room->memberships()->whereIn('user_id', $users->all())->delete();
+    }
+
+    public function revise(Collection|User $granted, Collection|User $revoked)
+    {
+        DB::transaction(function () use ($granted, $revoked) {
+            $this->grantTo($granted);
+            $this->revokeFrom($revoked);
+        });
     }
 }
