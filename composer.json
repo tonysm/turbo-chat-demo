@@ -10,6 +10,7 @@
         "hotwired-laravel/turbo-laravel": "^2.0.0-beta4",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
+        "tightenco/parental": "^1.4",
         "tonysm/importmap-laravel": "^2.3",
         "tonysm/tailwindcss-laravel": "^0.14"
     },
