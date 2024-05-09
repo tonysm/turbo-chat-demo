@@ -35,8 +35,8 @@ class ClosedsController extends Controller
     public function edit($room)
     {
         $room = Room::findOrFail($room)->become(Closed::class);
-        $selectedUsersIds = $room->memberships()->pluck('user_id')->all();
 
+        $selectedUsersIds = $room->memberships()->pluck('user_id')->all();
         [$selectedUsers, $unselectedUsers] = User::query()->orderBy('name')->get()->partition(fn ($user) => in_array($user->id, $selectedUsersIds));
 
         return view('rooms.closeds.edit', [

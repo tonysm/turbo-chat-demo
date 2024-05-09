@@ -38,6 +38,7 @@ class Room extends Model
     public static function createFor(array $attributes, $users)
     {
         return DB::transaction(function () use ($attributes, $users) {
+            /** @var Room $room */
             $room = static::create($attributes);
             $room->membership()->grantTo($users);
             return $room;
