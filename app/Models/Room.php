@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Parental\HasChildren;
@@ -27,7 +29,7 @@ class Room extends Model
     public static function booted(): void
     {
         static::creating(function (Room $room) {
-            if (auth()->check()) {
+            if (auth()->check() && ! $room->creator_id) {
                 $room->creator()->associate(auth()->user());
             }
         });
@@ -78,5 +80,23 @@ class Room extends Model
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function messages(): HasMany
+    {
+        return $this->hasMany(Message::class);
+    }
+
+    public function messagesAround(Message $message): Collection
+    {
+        $before = $this->messages()->with(['creator'])->pageBefore($message)->get();
+        $after = $this->messages()->with(['creator'])->pageAfter($message)->get();
+
+        return $before->merge([$message])->merge($after);
+    }
+
+    public function isClosed(): bool
+    {
+        return $this::class === $this->childTypes['closed'];
     }
 }

@@ -26,7 +26,7 @@
     </div>
 
     <div class="flex items-center justify-end mt-4">
-        <a href="{{ $room->exists ? route('rooms.opens.edit', $room) : route('rooms.opens.create') }}">Switch Type</a>
+        <a  data-turbo-action="replace" href="{{ $room->exists ? route('rooms.opens.edit', $room) : route('rooms.opens.create') }}">Switch Type</a>
 
         <x-primary-button class="ms-3">
             {{ $room->exists ? __('Save') : __('Create') }}

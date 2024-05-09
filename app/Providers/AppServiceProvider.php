@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use HotwiredLaravel\TurboLaravel\Facades\Turbo;
+use HotwiredLaravel\TurboLaravel\Facades\TurboStream;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Turbo::usePartialsSubfolderPattern();
     }
 }

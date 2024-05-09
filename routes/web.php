@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfilePasswordController;
+use App\Http\Controllers\RoomMessagesController;
 use App\Http\Controllers\Rooms\ClosedsController;
 use App\Http\Controllers\Rooms\OpensController;
 use App\Http\Controllers\RoomsController;
+use App\Http\Controllers\SidebarController;
 use App\Models\Room;
 use Illuminate\Support\Facades\Route;
 
@@ -29,7 +31,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('closeds', ClosedsController::class)->only(['create', 'store', 'edit', 'update']);
     });
 
-    Route::resource('rooms', RoomsController::class)->only(['show']);
+    Route::resource('rooms', RoomsController::class)->only(['index', 'show']);
+    Route::resource('rooms.messages', RoomMessagesController::class)->only(['index', 'store']);
+    Route::singleton('sidebar', SidebarController::class)->only(['show']);
 });
 
 Route::middleware('auth')->group(function () {
