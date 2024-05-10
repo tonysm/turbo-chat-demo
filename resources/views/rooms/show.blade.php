@@ -22,6 +22,7 @@
                         class="h-[50vh] overflow-y-auto flex flex-col-reverse"
                         data-controller="messages"
                         data-messages-user-id-value="{{ auth()->id() }}"
+                        data-messages-page-url-value="{{ route('rooms.messages.index', $room) }}"
                         data-messages-me-class="ml-auto mr-0"
                         style="view-transition-name: message-box;"
                     >

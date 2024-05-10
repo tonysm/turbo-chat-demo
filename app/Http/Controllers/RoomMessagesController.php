@@ -13,10 +13,10 @@ class RoomMessagesController extends Controller
             'messages' => $room->messages()
                 ->with(['creator'])
                 ->when($request->input('before'), fn ($query, $before) => (
-                    $query->pageBefore($room->messages()->find($before))
+                    $query->pageBefore($room->messages()->findOrFail($before))
                 ))
                 ->when($request->input('after'), fn ($query, $after) => (
-                    $query->pageAfter($room->messages()->find($after))
+                    $query->pageAfter($room->messages()->findOrFail($after))
                 ))
                 ->when(! $request->hasAny(['before', 'after']), fn ($query) => $query->lastPage())
                 ->get(),

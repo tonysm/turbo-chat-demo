@@ -9,6 +9,8 @@
         @endif
         {{ $meta ?? '' }}
 
+        <meta name="current-user-id" content="{{ auth()->id() }}">
+
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts -->

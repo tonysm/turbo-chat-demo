@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 trait Pagination
 {
-    const PAGE_SIZE = 50;
+    const PAGE_SIZE = 10;
 
     public function scopeLastPage(Builder $query): void
     {
