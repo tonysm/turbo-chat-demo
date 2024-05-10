@@ -15,8 +15,8 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     @include('rooms.closeds.partials.form', [
                         'room' => $room,
-                        'selectedUsers' => [],
-                        'unselectedUsers' => $users,
+                        'users' => $users,
+                        'selectedUsersIds' => collect([auth()->id()]),
                     ])
                 </div>
             </div>

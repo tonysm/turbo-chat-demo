@@ -36,13 +36,13 @@ class ClosedsController extends Controller
     {
         $room = Room::findOrFail($room)->become(Closed::class);
 
-        $selectedUsersIds = $room->memberships()->pluck('user_id')->all();
-        [$selectedUsers, $unselectedUsers] = User::query()->orderBy('name')->get()->partition(fn ($user) => in_array($user->id, $selectedUsersIds));
+        $selectedUsersIds = $room->memberships()->pluck('user_id');
+        $users = User::query()->orderBy('name')->get();
 
         return view('rooms.closeds.edit', [
             'room' => $room,
-            'selectedUsers' => $selectedUsers,
-            'unselectedUsers' => $unselectedUsers,
+            'users' => $users,
+            'selectedUsersIds' => $selectedUsersIds,
         ]);
     }
 
